@@ -1,0 +1,23 @@
+Package: Dense2SparseHDF5
+Type: Package
+Title: Memory efficient convert a dens HDF5 matrix to a sparse matrix
+Version: 1.0
+Date: 2020-02-07
+Author: Stefan Lang
+Maintainer: Stefan Lang <Stefan.Lang@med.lu.se>
+Description: Loom files may contain huge dense matrices. To load them into R is ofen not possible.
+        To reduce this problem this package reads the martix in chunks populates the sparse matrix chunk by chunk implemented cin c++.
+        or more full sentences.
+License: GPL (>= 2)
+Imports: 
+	Rcpp (>= 1.0.3),
+	hdf5r,
+	Matrix,
+	pryr
+LinkingTo: 
+	Rcpp,
+	RcppEigen,
+	RcppProgress
+RoxygenNote: 7.0.2
+Suggests: 
+    testthat (>= 2.1.0)
