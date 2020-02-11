@@ -1,50 +1,25 @@
-#include <Rcpp.h>
-using namespace Rcpp;
-#include <RcppEigen.h>
 #include <GrowingSparse.h>
 
-RCPP_MODULE(GrowingSparse) {
-	class_<GrowingSparse>( "GrowingSparse" )
+void printGR (GrowingSparse gr){
+/*	cat("containing a sparse matrix of size")
+	if( ! is.null(self$Matrix) ){
+		cat( paste( nrow(self$Matrix),'rows and', ncol(self$Matrix), "cols"))
+	}else {
+		cat ("0" )
+	}*/
+	Rcout << "containing a sparse matrix of size " << gr.nrow << " X " << gr.ncol << " with " << gr.size << " data slots" << std::endl;
+	Rcout << "At the moment " << gr.colA << " columns have been filled" << std::endl;
+}
 
-	.constructor<Eigen::SparseMatrix<double>,  int, int, int>()
+RCPP_MODULE(GrSparse) {
+	Rcpp::class_<GrowingSparse>("GrSparse") 
 
-	// .field_readonly( "size", &GrowingSparse::size )
-	// .field_readonly( "ncol", &GrowingSparse::ncol )
+		.constructor<int,int,int>("constructor with nrow, ncol and (total) size")
 
-	.method( "add", &GrowingSparse::add )
-	.method( "getMatrix", &GrowingSparse::getMatrix )
+		.method("resize2",         &GrowingSparse::resize2,            "reserve size many entries to be stored in the object")
+		.method("add",             &GrowingSparse::add,                "add a normal matrix slice to the object")
+		.method("getMatrix",       &GrowingSparse::getMatrix,          "return the sparse matrix object from within the object")
 	;
-}
 
-
-//' @title create a new R object being a growing sparse matrix
-//' @aliases new,Dense2SparseHDF5-method
-//' @rdname new
-//' @description create a new GroingsSparse c++ object in R
-//' @return GrowingSparse c++ object
-//' @export
-// [[Rcpp::export]]
-RcppExport SEXP GrowingSparse__new(){
-	// create pointer to an GrowingSparse object and
-	// wrap it as an external pointer
-	Rcpp::XPtr<GrowingSparse>
-	ptr( new GrowingSparse(  ), true );
-	// return the external pointer to the R side
-	return ptr;
-}
-
-//' @title create a new R object being a growung sparse matrix
-//' @aliases GrowingSparse,Dense2SparseHDF5-method
-//' @rdname GrowingSparse
-//' @description create a new GroingsSparse c++ object in R
-//' @return GrowingSparse c++ object
-//' @export
-// [[Rcpp::export]]
-RcppExport SEXP GrowingSparse__GrowingSparse(){
-	// create pointer to an GrowingSparse object and
-	// wrap it as an external pointer
-	Rcpp::XPtr<GrowingSparse>
-	ptr( new GrowingSparse(  ), true );
-	// return the external pointer to the R side
-	return ptr;
+	Rcpp::function( "print",            &printGR ) ; 
 }

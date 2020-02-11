@@ -16,6 +16,7 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 Eigen::SparseMatrix<double> Matr( int nrow, int ncol, int size ) {
 	Eigen::SparseMatrix<double> ret(nrow,ncol);
-	ret.reserve( size );
+	ret.reserve(  size );
+	Rcout << "matrix size = " << ret.size() << std::endl;
 	return (ret);
 }

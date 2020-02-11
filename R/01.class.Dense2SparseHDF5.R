@@ -37,7 +37,7 @@ Dense2SparseHDF5 <- #withFormalClass(
 			#' @description
 			#' convert a dense matrix entry in the hdf5 file to sparse
 			#' @param slot the slot to convert (default 'matrix')
-			#' @param blockSize the read block size ( default 1000)
+			#' @param block_size the read block size ( default 1000)
 			toSparse = function(slot='matrix', block_size=1000 ){
 
 				ncol = self$file[[slot]]$dims[2]
@@ -53,18 +53,50 @@ Dense2SparseHDF5 <- #withFormalClass(
 				}
 				message("aquiring sparsity")
 				notN =  unlist(lapply( cols_grouped, function(cs) { NotNull( self$file[[slot]][, cs ]) } )) #c++
-				n = sum( notN) 
+				n = max( notN) 
 				message( paste(n,"data slots from", nrow,"x", ncol,"; sparsity =", n/(nrow*ncol) ) )
 				self$Matrix = Matr( as.integer(nrow), as.integer(ncol), as.integer(n) );
-				message(paste('Starting data fill starting with a matrix of size', pryr::object_size(self$Matrix)) )
+				message(paste('Starting data fill starting with a matrix of size', format(object.size(self$Matrix), units = "auto") ))
 				alloc  = 0
 				for ( id in 1:length(cols_grouped)){
 					alloc = alloc+ notN[id]
-					message( paste( range(cols_grouped[[id]]), "and matrix size:", pryr::object_size(self$Matrix)) )
+					message( paste( paste(range(cols_grouped[[id]]),collapse=" "), "and matrix size:", format(object.size(self$Matrix), units = "auto") ))
 					self$Matrix = add( self$Matrix, self$file[[slot]][, cols_grouped[[id]] ], cols_grouped[[id]][1] -1, alloc )
+					gc()
 				}
 				message('finished')
+			},
+			toSparseVector = function(slot='matrix', block_size=1000 ){
+				ncol = self$file[[slot]]$dims[2]
+				nrow = self$file[[slot]]$dims[1]
+				cols_grouped <- split(1:ncol,  (1:(ncol) %/% block_size) )
+				b = 10
+				while (any(unlist( lapply( cols_grouped, length)) == 1) ) {
+					block_size = block_size +1
+					cols_grouped <- split(1:ncol,  (1:(ncol) %/% block_size) )
+					b = b-1
+					if ( b == 0)
+						break
+				}
+				message("aquiring sparsity")
+				notN =  unlist(lapply( cols_grouped, function(cs) { NotNull( self$file[[slot]][, cs ]) } )) #c++
+				n = sum( notN)
+				sum = matrix(0, ncol=3, nrow=n)
+				alloc  = 1
+				for ( id in 1:length(cols_grouped)){
+					notN[id]
+					message( paste( paste(range(cols_grouped[[id]]),collapse=" "), "and matrix size:", format(object.size(sum), units = "auto") ))
+					message( paste("put them to", alloc,":", (alloc +notN[id] -1) ) )
+					sum[alloc:(alloc +notN[id] -1),] = addVector( self$file[[slot]][, cols_grouped[[id]] ], cols_grouped[[id]][1] -1, notN[id] )
+					alloc = alloc +notN[id]
+					gc()
+				}
+				self$Matrix = Matrix::sparseMatrix( i = sum[,1]+1 , j =sum[,2] +1 , x= sum[,3] )
+				rm (sum)
+				gc()
+				message('finished')
 			}
+
 		)
 	);
 

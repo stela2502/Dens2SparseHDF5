@@ -1,41 +1,45 @@
+
+
 #include <Rcpp.h>
 #include <RcppEigen.h>
 
+#include <RcppCommon.h>
+
+RCPP_EXPOSED_CLASS(GrowingSparse)
+
 using namespace Rcpp;
+
 
 class GrowingSparse {
 public:
 
-	GrowingSparse ( ) {
+	int colA;
+	int size;
+	int ncol;
+	int nrow;
 
-		mat = Eigen::SparseMatrix<double> (1,1);
-		size = 1;
-		ncol = 0;
-		nrow = 0;
+	GrowingSparse ( int Nrow, int Ncol, int Size ) {
 
-	};
-	GrowingSparse ( Eigen::SparseMatrix<double> Mat, int Size, int Ncol, int Nrow) {
-
-		mat = Mat;
+		mat = Eigen::SparseMatrix<double> (Nrow,Ncol);
+		mat.reserve( Size );
 		size = Size;
 		ncol = Ncol;
 		nrow = Nrow;
+		colA=0;
+
+	};
+
+	void resize2( int size){
+		mat.reserve( size );
 	};
 	void add ( NumericMatrix X ) {
 		// identify the not 0 values and add them to the GROWN matrix
-		int total = 0;
-		for ( int r = 0; r < X.nrow(); r ++ ) {
-			for ( int c=0; c < X.ncol(); c++ ) {
+		for ( int c=0; c < X.ncol(); c++ ) {
+			for ( int r = 0; r < X.nrow(); r ++ ) {
 				if ( X(r,c) > 0 )
-					total ++;
+					mat.insert(r, colA) = X(r,c);
 			}
-		}
-		mat.reserve( size + total ); //resize
-		for ( int r = 0; r < X.nrow(); r ++ ) {
-			for ( int c=0; c < X.ncol(); c++ ) {
-				if ( X(r,c) > 0 )
-					mat.insert(c,r) = X(r,c);
-			}
+			colA ++;
 		}
 
 	};
@@ -46,9 +50,7 @@ public:
 private:
 	Eigen::SparseMatrix<double> mat;
 
-	int size;
-	int ncol;
-	int nrow;
+
 
 };	
 

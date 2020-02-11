@@ -31,6 +31,7 @@ while also trying to be as fast as possible.
 \item \href{#method-print}{\code{Dense2SparseHDF5$print()}}
 \item \href{#method-new}{\code{Dense2SparseHDF5$new()}}
 \item \href{#method-toSparse}{\code{Dense2SparseHDF5$toSparse()}}
+\item \href{#method-toSparseVector}{\code{Dense2SparseHDF5$toSparseVector()}}
 \item \href{#method-clone}{\code{Dense2SparseHDF5$clone()}}
 }
 }
@@ -72,10 +73,18 @@ convert a dense matrix entry in the hdf5 file to sparse
 \describe{
 \item{\code{slot}}{the slot to convert (default 'matrix')}
 
-\item{\code{blockSize}}{the read block size ( default 1000)}
+\item{\code{block_size}}{the read block size ( default 1000)}
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-toSparseVector"></a>}}
+\subsection{Method \code{toSparseVector()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Dense2SparseHDF5$toSparseVector(slot = "matrix", block_size = 1000)}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

@@ -13,7 +13,6 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 int NotNull( NumericMatrix X ) {
 	int ret = 0;
-	
 	for (int c=0; c < X.ncol(); c++ ){
 		for (int r=0; r < X.nrow(); r++ ){
 			if ( X(r,c) != 0 )
