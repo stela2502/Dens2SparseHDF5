@@ -11,3 +11,17 @@ The process in implemented in c++ using the Rcpp package, but needs further spee
 install.packagaes('devtools')
 
 devtools::install_git('https://github.com/stela2502/Dense2SparseHDF5.git')
+
+# Usage
+
+```
+library(Dense2SparseHDF5)
+
+file ="someFile.loom"
+
+obj= Dense2SparseHDF5$new(file)
+obj2$toSparseVector()
+
+obj$Matrix
+
+```

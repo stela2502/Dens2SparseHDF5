@@ -11,7 +11,7 @@
 #' @return the propper resized dense matrix (hopefully)
 #' @export
 Matr <- function(nrow, ncol, size) {
-    .Call(`_Dense2SparseHDF5_Matr`, nrow, ncol, size)
+    .Call('_Dense2SparseHDF5_Matr', PACKAGE = 'Dense2SparseHDF5', nrow, ncol, size)
 }
 
 #' @title NotNull returns the amount of not zwero entries in the matrix/vector
@@ -22,7 +22,7 @@ Matr <- function(nrow, ncol, size) {
 #' @return the amount of not zero entries
 #' @export
 NotNull <- function(X) {
-    .Call(`_Dense2SparseHDF5_NotNull`, X)
+    .Call('_Dense2SparseHDF5_NotNull', PACKAGE = 'Dense2SparseHDF5', X)
 }
 
 #' @title add runs wilcox test on the columns of the sparse matrix
@@ -35,7 +35,7 @@ NotNull <- function(X) {
 #' @return null
 #' @export
 add <- function(X, dat, offset, alloc) {
-    .Call(`_Dense2SparseHDF5_add`, X, dat, offset, alloc)
+    .Call('_Dense2SparseHDF5_add', PACKAGE = 'Dense2SparseHDF5', X, dat, offset, alloc)
 }
 
 #' @title addVector runs wilcox test on the columns of the sparse matrix
@@ -47,6 +47,6 @@ add <- function(X, dat, offset, alloc) {
 #' @return null
 #' @export
 addVector <- function(dat, offset, alloc) {
-    .Call(`_Dense2SparseHDF5_addVector`, dat, offset, alloc)
+    .Call('_Dense2SparseHDF5_addVector', PACKAGE = 'Dense2SparseHDF5', dat, offset, alloc)
 }
 

@@ -81,10 +81,22 @@ convert a dense matrix entry in the hdf5 file to sparse
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-toSparseVector"></a>}}
 \subsection{Method \code{toSparseVector()}}{
+convert a dense matrix entry in the hdf5 file to sparse
+This function does not directly modify the sparse matrix oin c++,
+but converts the matrix into a i j and x vector using c++ and the R Matrix Package.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dense2SparseHDF5$toSparseVector(slot = "matrix", block_size = 1000)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{slot}}{the slot to convert (default 'matrix')}
+
+\item{\code{block_size}}{the read block size ( default 1000)}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

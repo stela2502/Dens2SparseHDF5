@@ -66,6 +66,12 @@ Dense2SparseHDF5 <- #withFormalClass(
 				}
 				message('finished')
 			},
+			#' @description
+			#' convert a dense matrix entry in the hdf5 file to sparse
+			#' This function does not directly modify the sparse matrix oin c++,
+			#' but converts the matrix into a i j and x vector using c++ and the R Matrix Package.
+			#' @param slot the slot to convert (default 'matrix')
+			#' @param block_size the read block size ( default 1000)
 			toSparseVector = function(slot='matrix', block_size=1000 ){
 				ncol = self$file[[slot]]$dims[2]
 				nrow = self$file[[slot]]$dims[1]
