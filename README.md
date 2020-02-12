@@ -20,6 +20,7 @@ library(Dense2SparseHDF5)
 file ="someFile.loom"
 
 obj= Dense2SparseHDF5$new(file)
+
 obj2$toSparseVector()
 
 obj$Matrix
