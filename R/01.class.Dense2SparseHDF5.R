@@ -85,7 +85,11 @@ Dense2SparseHDF5 <- #withFormalClass(
 						break
 				}
 				message("aquiring sparsity")
-				notN =  unlist(lapply( cols_grouped, function(cs) { NotNull( self$file[[slot]][, cs ]) } )) #c++
+				notN = vector('numeric', length(cols_grouped))
+				for ( id in 1:length(cols_grouped)){
+					notN[id] = NotNull( self$file[[slot]][, cols_grouped[[id]] ]) #c++
+					cat('.')
+				}
 				n = sum( notN)
 				sum = matrix(0, ncol=3, nrow=n)
 				alloc  = 1

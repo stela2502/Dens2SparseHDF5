@@ -21,7 +21,7 @@ file ="someFile.loom"
 
 obj= Dense2SparseHDF5$new(file)
 
-obj2$toSparseVector()
+obj$toSparseVector()
 
 obj$Matrix
 
