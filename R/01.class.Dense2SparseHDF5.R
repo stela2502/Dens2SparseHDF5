@@ -40,6 +40,7 @@ Dense2SparseHDF5 <- #withFormalClass(
 			#' @param block_size the read block size ( default 1000)
 			toSparse = function(slot='matrix', block_size=1000 ){
 
+				return ( self$toSparseVecto( slot, block_size) )
 				ncol = self$file[[slot]]$dims[2]
 				nrow = self$file[[slot]]$dims[1]
 				cols_grouped <- split(1:ncol,  (1:(ncol) %/% block_size) )
