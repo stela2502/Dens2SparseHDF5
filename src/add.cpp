@@ -11,11 +11,12 @@ using namespace Rcpp;
 //' @description count the not zeros in a dense matrix
 //' @param X the sparse matrix 
 //' @param dat the dense matrix
-//' @param alloc the amount of data that has to fit into the object
+//' @param alloc the amount of data that has to fit into the return object
+//' @oaram proigressBar show a progress bar (default true)
 //' @return null
 //' @export
 // [[Rcpp::export]]
-Eigen::SparseMatrix<double> add( Eigen::SparseMatrix<double> X, NumericMatrix dat, int offset, int alloc ) {
+Eigen::SparseMatrix<double> add( Eigen::SparseMatrix<double> X, NumericMatrix dat, int offset, int alloc, bool progressBar = true ) {
 	
 
 	Rcout << "allocating " << alloc << " free data slots" << " size was: " << X.size() << std::endl;
@@ -24,7 +25,7 @@ Eigen::SparseMatrix<double> add( Eigen::SparseMatrix<double> X, NumericMatrix da
 
 	Rcout << "setting size to " << X.size() << std::endl;
 
-	Progress p(dat.ncol(), true);
+	Progress p(dat.ncol(), progressBar);
 	int colA;
 	for (int c=0; c < dat.ncol(); c++ ){
 		p.increment();
@@ -48,11 +49,11 @@ Eigen::SparseMatrix<double> add( Eigen::SparseMatrix<double> X, NumericMatrix da
 //' @return null
 //' @export
 // [[Rcpp::export]]
-NumericMatrix addVector( NumericMatrix dat, int offset, int alloc ) {
+NumericMatrix addVector( NumericMatrix dat, int offset, int alloc, bool progressBar = true ) {
 
 	NumericMatrix X (alloc, 3 );
 
-	Progress p(dat.ncol(), true);
+	Progress p(dat.ncol(), progressBar);
 
 	int colA;
 	int id = 0;

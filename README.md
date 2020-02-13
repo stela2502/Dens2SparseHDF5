@@ -12,6 +12,8 @@ install.packagaes('devtools')
 
 devtools::install_git('https://github.com/stela2502/Dense2SparseHDF5.git')
 
+```
+
 # Usage
 
 ```
@@ -21,8 +23,11 @@ file ="someFile.loom"
 
 obj= Dense2SparseHDF5$new(file)
 
-obj$toSparseVector()
+obj$toSparseVector( slot='matrix', block_size=1000 )
 
 obj$Matrix
 
 ```
+
+If the default approach fails try to change the block_size from the default 1e+3 to some other value (e.g. 1e+4).
+
