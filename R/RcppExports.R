@@ -31,11 +31,12 @@ NotNull <- function(X) {
 #' @description count the not zeros in a dense matrix
 #' @param X the sparse matrix 
 #' @param dat the dense matrix
-#' @param alloc the amount of data that has to fit into the object
+#' @param alloc the amount of data that has to fit into the return object
+#' @oaram proigressBar show a progress bar (default true)
 #' @return null
 #' @export
-add <- function(X, dat, offset, alloc) {
-    .Call('_Dense2SparseHDF5_add', PACKAGE = 'Dense2SparseHDF5', X, dat, offset, alloc)
+add <- function(X, dat, offset, alloc, progressBar = TRUE) {
+    .Call('_Dense2SparseHDF5_add', PACKAGE = 'Dense2SparseHDF5', X, dat, offset, alloc, progressBar)
 }
 
 #' @title addVector runs wilcox test on the columns of the sparse matrix
@@ -46,7 +47,7 @@ add <- function(X, dat, offset, alloc) {
 #' @param alloc the amount of data that has to fit into the object
 #' @return null
 #' @export
-addVector <- function(dat, offset, alloc) {
-    .Call('_Dense2SparseHDF5_addVector', PACKAGE = 'Dense2SparseHDF5', dat, offset, alloc)
+addVector <- function(dat, offset, alloc, progressBar = TRUE) {
+    .Call('_Dense2SparseHDF5_addVector', PACKAGE = 'Dense2SparseHDF5', dat, offset, alloc, progressBar)
 }
 

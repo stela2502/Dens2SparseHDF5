@@ -32,8 +32,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // add
-Eigen::SparseMatrix<double> add(Eigen::SparseMatrix<double> X, NumericMatrix dat, int offset, int alloc);
-RcppExport SEXP _Dense2SparseHDF5_add(SEXP XSEXP, SEXP datSEXP, SEXP offsetSEXP, SEXP allocSEXP) {
+Eigen::SparseMatrix<double> add(Eigen::SparseMatrix<double> X, NumericMatrix dat, int offset, int alloc, bool progressBar);
+RcppExport SEXP _Dense2SparseHDF5_add(SEXP XSEXP, SEXP datSEXP, SEXP offsetSEXP, SEXP allocSEXP, SEXP progressBarSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -41,20 +41,22 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericMatrix >::type dat(datSEXP);
     Rcpp::traits::input_parameter< int >::type offset(offsetSEXP);
     Rcpp::traits::input_parameter< int >::type alloc(allocSEXP);
-    rcpp_result_gen = Rcpp::wrap(add(X, dat, offset, alloc));
+    Rcpp::traits::input_parameter< bool >::type progressBar(progressBarSEXP);
+    rcpp_result_gen = Rcpp::wrap(add(X, dat, offset, alloc, progressBar));
     return rcpp_result_gen;
 END_RCPP
 }
 // addVector
-NumericMatrix addVector(NumericMatrix dat, int offset, int alloc);
-RcppExport SEXP _Dense2SparseHDF5_addVector(SEXP datSEXP, SEXP offsetSEXP, SEXP allocSEXP) {
+NumericMatrix addVector(NumericMatrix dat, int offset, int alloc, bool progressBar);
+RcppExport SEXP _Dense2SparseHDF5_addVector(SEXP datSEXP, SEXP offsetSEXP, SEXP allocSEXP, SEXP progressBarSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type dat(datSEXP);
     Rcpp::traits::input_parameter< int >::type offset(offsetSEXP);
     Rcpp::traits::input_parameter< int >::type alloc(allocSEXP);
-    rcpp_result_gen = Rcpp::wrap(addVector(dat, offset, alloc));
+    Rcpp::traits::input_parameter< bool >::type progressBar(progressBarSEXP);
+    rcpp_result_gen = Rcpp::wrap(addVector(dat, offset, alloc, progressBar));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -62,8 +64,8 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_Dense2SparseHDF5_Matr", (DL_FUNC) &_Dense2SparseHDF5_Matr, 3},
     {"_Dense2SparseHDF5_NotNull", (DL_FUNC) &_Dense2SparseHDF5_NotNull, 1},
-    {"_Dense2SparseHDF5_add", (DL_FUNC) &_Dense2SparseHDF5_add, 4},
-    {"_Dense2SparseHDF5_addVector", (DL_FUNC) &_Dense2SparseHDF5_addVector, 3},
+    {"_Dense2SparseHDF5_add", (DL_FUNC) &_Dense2SparseHDF5_add, 5},
+    {"_Dense2SparseHDF5_addVector", (DL_FUNC) &_Dense2SparseHDF5_addVector, 4},
     {NULL, NULL, 0}
 };
 
