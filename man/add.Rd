@@ -5,14 +5,14 @@
 \alias{add,Dense2SparseHDF5-method}
 \title{add runs wilcox test on the columns of the sparse matrix}
 \usage{
-add(X, dat, offset, alloc)
+add(X, dat, offset, alloc, progressBar = TRUE)
 }
 \arguments{
 \item{X}{the sparse matrix}
 
 \item{dat}{the dense matrix}
 
-\item{alloc}{the amount of data that has to fit into the object}
+\item{alloc}{the amount of data that has to fit into the return object}
 }
 \value{
 null

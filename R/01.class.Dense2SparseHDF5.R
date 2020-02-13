@@ -87,25 +87,44 @@ Dense2SparseHDF5 <- #withFormalClass(
 				}
 				message("aquiring sparsity")
 				notN = vector('numeric', length(cols_grouped))
-				for ( id in 1:length(cols_grouped)){
-					notN[id] = NotNull( self$file[[slot]][, cols_grouped[[id]] ]) #c++
-					cat('.')
+				if ( interactive() ){
+					for ( id in 1:length(cols_grouped)){
+						notN[id] = NotNull( self$file[[slot]][, cols_grouped[[id]] ]) #c++
+						cat('.')
+					}
+				}else{
+					for ( id in 1:length(cols_grouped)){
+						notN[id] = NotNull( self$file[[slot]][, cols_grouped[[id]] ]) #c++
+					}
 				}
+				
 				cat("\n")
 				n = sum( notN)
 				sum = matrix(0, ncol=3, nrow=n)
 				alloc  = 1
-				for ( id in 1:length(cols_grouped)){
-					notN[id]
-					#message( paste( paste(range(cols_grouped[[id]]),collapse=" "), "and matrix size:", format(object.size(sum), units = "auto") ))
-					#message( paste("put them to", alloc,":", (alloc +notN[id] -1) ) )
-					sum[alloc:(alloc +notN[id] -1),] = 
-						addVector( dat = self$file[[slot]][, cols_grouped[[id]] ], offset = cols_grouped[[id]][1] -1, alloc = notN[id], progressBar=FALSE )
-					alloc = alloc +notN[id]
-					cat('.')
-					#gc()
+				message("converting dense to sparse")
+				if ( interactive() ){
+					for ( id in 1:length(cols_grouped)){
+						notN[id]
+						#message( paste( paste(range(cols_grouped[[id]]),collapse=" "), "and matrix size:", format(object.size(sum), units = "auto") ))
+						#message( paste("put them to", alloc,":", (alloc +notN[id] -1) ) )
+						sum[alloc:(alloc +notN[id] -1),] = 
+							addVector( dat = self$file[[slot]][, cols_grouped[[id]] ], offset = cols_grouped[[id]][1] -1, alloc = notN[id], progressBar=FALSE )
+						alloc = alloc +notN[id]
+						cat('.')
+						#gc()
+					}
+				}else {
+					for ( id in 1:length(cols_grouped)){
+						notN[id]
+						sum[alloc:(alloc +notN[id] -1),] = 
+							addVector( dat = self$file[[slot]][, cols_grouped[[id]] ], offset = cols_grouped[[id]][1] -1, alloc = notN[id], progressBar=FALSE )
+						alloc = alloc +notN[id]
+					}
 				}
+
 				cat("\n")
+				message('creating R Matrix object')
 				self$Matrix = Matrix::sparseMatrix( i = sum[,1]+1 , j =sum[,2] +1 , x= sum[,3] )
 				rm (sum)
 				gc()

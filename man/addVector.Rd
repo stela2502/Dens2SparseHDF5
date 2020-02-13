@@ -5,7 +5,7 @@
 \alias{addVector,Dense2SparseHDF5-method}
 \title{addVector runs wilcox test on the columns of the sparse matrix}
 \usage{
-addVector(dat, offset, alloc)
+addVector(dat, offset, alloc, progressBar = TRUE)
 }
 \arguments{
 \item{dat}{the dense matrix}
