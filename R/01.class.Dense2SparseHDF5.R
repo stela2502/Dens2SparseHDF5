@@ -69,7 +69,7 @@ Dense2SparseHDF5 <- #withFormalClass(
 			},
 			#' @description
 			#' convert a dense matrix entry in the hdf5 file to sparse
-			#' This function does not directly modify the sparse matrix oin c++,
+			#' This function does not directly modify the sparse matrix in c++,
 			#' but converts the matrix into a i j and x vector using c++ and the R Matrix Package.
 			#' @param slot the slot to convert (default 'matrix')
 			#' @param block_size the read block size ( default 1000)
@@ -85,7 +85,8 @@ Dense2SparseHDF5 <- #withFormalClass(
 					if ( b == 0)
 						break
 				}
-				message("aquiring sparsity")
+				message(paste("aquiring sparsity over", length(cols_grouped),"slices"))
+				message(paste("_"q()))
 				notN = vector('numeric', length(cols_grouped))
 				if ( interactive() ){
 					for ( id in 1:length(cols_grouped)){
@@ -98,7 +99,10 @@ Dense2SparseHDF5 <- #withFormalClass(
 					}
 				}
 				
-				cat("\n")
+				cat("\n"))
+
+		
+
 				n = sum( notN)
 				sum = matrix(0, ncol=3, nrow=n)
 				alloc  = 1
@@ -128,6 +132,14 @@ Dense2SparseHDF5 <- #withFormalClass(
 				self$Matrix = Matrix::sparseMatrix( i = sum[,1]+1 , j =sum[,2] +1 , x= sum[,3] )
 				rm (sum)
 				gc()
+				try({
+					n = names( obj$file[['col_attrs']] )[1]
+					rownames( obj$Matrix ) = obj$file[[paste('col_attrs',n ,sep="/")]][]
+					n = names( obj$file[['row_attrs']] )[1]
+					##  if the last columns do not contain info they are not added to the matrix
+					colnames( obj$Matrix ) = obj$file[[paste('row_attrs',n ,sep="/")]][][1:ncol(obj$Matrix)] 
+				})
+
 				message('finished')
 			}
 
